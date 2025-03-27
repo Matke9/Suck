@@ -27,6 +27,8 @@ public class MapGenerator : MonoBehaviour
     public TerrainType[] regions;
     public void GenerateMap()
     {
+        System.Random rand = new System.Random();
+        seed = rand.Next(-100000, 100000);
         float[,] noiseMap = Noise.GenerateNoiseMap (mapHeight, mapWidth, seed, noiseScale, octaves, persistance, lacunarity, offset);
 
         Color[] colorMap = new Color[mapWidth * mapHeight];
@@ -57,6 +59,11 @@ public class MapGenerator : MonoBehaviour
         else if(drawMode == DrawMode.Mesh)
         {
             display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier), TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
+            if (display.meshRenderer.gameObject.TryGetComponent<MeshCollider>(out MeshCollider meshCollider))
+            {
+                DestroyImmediate(meshCollider);
+            }
+            display.meshRenderer.gameObject.AddComponent<MeshCollider>();
         }
     }
 
