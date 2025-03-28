@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 
 public static class MeshGenerator 
 {
-    public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier)
+    public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier, AnimationCurve heightCurve)
     {
         int width = heightMap.GetLength(0);
         int height = heightMap.GetLength(1);
@@ -16,7 +16,7 @@ public static class MeshGenerator
         for(int i = 0; i < height; i++){
             for(int j = 0; j < width; j++)
             {
-                meshData.vertices[vertexIndex] = new Vector3(topLeftX + i, heightMap[i, j] * heightMultiplier, topLeftZ + j);
+                meshData.vertices[vertexIndex] = new Vector3(topLeftX + i, heightCurve.Evaluate(heightMap [i, j]) * heightMultiplier, topLeftZ + j);
                 meshData.uvs[vertexIndex] = new Vector2(i/(float)width, j/(float)height);
                 if(i < width - 1 && j < height - 1)
                 {
