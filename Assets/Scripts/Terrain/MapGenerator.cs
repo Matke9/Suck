@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
+    private void Start()
+    {
+        GenerateMap();
+    }
+
     public enum DrawMode
     {
         noiseMap, colorMap, Mesh
